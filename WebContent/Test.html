@@ -1,0 +1,46 @@
+<!doctype html>
+<html ng-app="myApp">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script type="text/javascript">
+    var app = angular.module('myApp', []);
+    app.controller('jobsCtrl', function($scope, $http) {
+        $http.get('http://localhost:8080/JenkinsAPI/rest/jenkins/jobs')
+        .then(function (response) {
+        	$scope.jenkins = response.data;        	
+        	});
+    });
+    </script>
+    
+  </head>
+  <style type="text/css">
+	.tg  {border-collapse:collapse;border-spacing:0;}
+	.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+	.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+	.tg .tg-yw4l{vertical-align:top}
+  </style>
+	<body ng-app="myApp">
+		<div ng-controller="jobsCtrl"> 		
+			<table class="tg">
+				 <th class="tg-yw4l">Job Name</th>
+				 <th class="tg-yw4l">Status</th>				 
+				 <th class="tg-yw4l">Passed Tests</th>
+				 <th class="tg-yw4l">Failed Tests</th>
+				 <th class="tg-yw4l">Skipped Tests</th>
+				 <th class="tg-yw4l">Total Tests</th>				 
+				 <th class="tg-yw4l">Duration in Seconds</th>
+				 <tbody>
+					 <tr class="tg-yw4l" ng-repeat="x in jenkins" >
+					    <td class="tg-yw4l"><a target="_blank" ng-href='https://jenkins.orasi.com/job/Selenium-Java-Core/job/{{x.name}}/lastBuild/testngreports/'>{{x.name}}</a></td>
+					    <td class="tg-yw4l">{{x.color}}</td>
+					    <td class="tg-yw4l">{{x.total-x.failCount-x.skipCount}}</td>
+					    <td class="tg-yw4l">{{x.failCount}}</td>
+					    <td class="tg-yw4l">{{x.skipCount}}</td>
+					    <td class="tg-yw4l">{{x.total}}</td>
+					    <td class="tg-yw4l">{{x.duration}}</td>
+					 </tr>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
